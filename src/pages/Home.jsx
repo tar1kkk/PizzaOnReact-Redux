@@ -6,36 +6,49 @@ import PizzaBlock from '../components/PizzaBlock';
 import Sort from '../components/Sort';
 import Categories from '../components/Categories';
 
-function Home() {
+function Home({ searchValue }) {
 
 	const [pizzas, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [categoryId, setCategoryId] = useState(0);
+	const [sortType, setSortType] = useState({
+		name: 'популярности',
+		sortProperty: 'rating',
+	});
 
 	async function fetchData() {
-		const res = await fetch('https://6357bebfc26aac906f3175b4.mockapi.io/items');
+		const res = await fetch(
+			`https://6357bebfc26aac906f3175b4.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''
+			}&sortBy=${sortType.sortProperty}&order=desc`);
 		const data = await res.json();
 		setPizzas(data);
-		setIsLoading(false)
+		setIsLoading(false);
 	}
 
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetchData();
-	}, []);
+		window.scrollTo(0, 0);
+	}, [categoryId, sortType]);
 
+	const pizzasItem = pizzas
+		.filter(obj => {
+			if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+				return true;
+			} else {
+				return false;
+			}
+		}).map((item) => <PizzaBlock key={item.id}  {...item} />);
 	return (
-		<div >
+		<div className='container'>
 			<div className="content__top">
-				<Categories />
-				<Sort />
+				<Categories value={categoryId} onChangeCategory={(id) => setCategoryId(id)} />
+				<Sort value={sortType} onChangeSort={(id) => setSortType(id)} />
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
 			<div className="content__items">
-				{
-					isLoading
-						? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-						: pizzas.map((item) => <PizzaBlock key={item.id}  {...item} />)
-				}
+				{isLoading ? [...new Array(6)].map((_, index) => <Skeleton key={index} />) : pizzasItem}
 			</div>
 		</div>
 	);
