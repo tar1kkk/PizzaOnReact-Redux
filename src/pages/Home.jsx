@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
+import qs from 'qs';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import PizzaBlock from '../components/PizzaBlock';
 import Sort from '../components/Sort';
@@ -8,31 +9,35 @@ import Categories from '../components/Categories';
 import ReactPaginate from 'react-paginate';
 import Pagination from '../components/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryId } from '../redux/slices/filterSlice';
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Home({ searchValue }) {
+	const navigate = useNavigate();
 	const categoryId = useSelector(state => state.filterSlice.categoryId);
 	const dispatch = useDispatch();
 	const sortType = useSelector(state => state.filterSlice.sort.sortProperty);
+	const currentPage = useSelector(state => state.filterSlice.currentPage);
 
 
 	const [pizzas, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [currentPage, setCurrentPage] = useState(1);
 
 	const onChangeCategory = (id) => {
 		dispatch(setCategoryId(id));
 	}
-
-	async function fetchData() {
-		const res = await fetch(
-			`https://6357bebfc26aac906f3175b4.mockapi.io/items?page=${currentPage}&limit=4&${categoryId > 0 ? `category=${categoryId}` : ''
-			}&sortBy=${sortType.sortProperty}&order=desc`);
-		const data = await res.json();
-		setPizzas(data);
-		setIsLoading(false);
+	const onChangePage = (num) => {
+		dispatch(setCurrentPage(num));
 	}
 
+	async function fetchData() {
+		const res = await axios.get(
+			`https://6357bebfc26aac906f3175b4.mockapi.io/items?page=${currentPage}&limit=4&${categoryId > 0 ? `category=${categoryId}` : ''
+			}&sortBy=${sortType}&order=desc`);
+		setPizzas(res.data);
+		setIsLoading(false);
+	}
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -58,7 +63,7 @@ function Home({ searchValue }) {
 			<div className="content__items">
 				{isLoading ? [...new Array(6)].map((_, index) => <Skeleton key={index} />) : pizzasItem}
 			</div>
-			<Pagination onChangePage={num => setCurrentPage(num)} />
+			<Pagination currentPage={currentPage} onChangePage={onChangePage} />
 		</div>
 	);
 }
