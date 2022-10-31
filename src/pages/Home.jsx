@@ -7,17 +7,22 @@ import Sort from '../components/Sort';
 import Categories from '../components/Categories';
 import ReactPaginate from 'react-paginate';
 import Pagination from '../components/Pagination';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
 
 function Home({ searchValue }) {
+	const categoryId = useSelector(state => state.filterSlice.categoryId);
+	const dispatch = useDispatch();
+	const sortType = useSelector(state => state.filterSlice.sort.sortProperty);
+
 
 	const [pizzas, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [categoryId, setCategoryId] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [sortType, setSortType] = useState({
-		name: 'популярности',
-		sortProperty: 'rating',
-	});
+
+	const onChangeCategory = (id) => {
+		dispatch(setCategoryId(id));
+	}
 
 	async function fetchData() {
 		const res = await fetch(
@@ -46,8 +51,8 @@ function Home({ searchValue }) {
 	return (
 		<div className='container'>
 			<div className="content__top">
-				<Categories value={categoryId} onChangeCategory={(id) => setCategoryId(id)} />
-				<Sort value={sortType} onChangeSort={(id) => setSortType(id)} />
+				<Categories value={categoryId} onChangeCategory={(id) => onChangeCategory(id)} />
+				<Sort />
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
 			<div className="content__items">
