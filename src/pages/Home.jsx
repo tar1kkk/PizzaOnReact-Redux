@@ -58,9 +58,13 @@ function Home({ searchValue }) {
 				<Sort />
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
-			<div className="content__items">
-				{status === 'loading' ? [...new Array(6)].map((_, index) => <Skeleton key={index} />) : pizzasItem}
-			</div>
+			{
+				status === 'error' ? <div>
+					<h2>Произошла ошибка :(</h2>
+				</div> : <div className="content__items">
+					{status === 'loading' ? [...new Array(6)].map((_, index) => <Skeleton key={index} />) : pizzasItem}
+				</div>
+			}
 			<Pagination currentPage={currentPage} onChangePage={onChangePage} />
 		</div>
 	);
