@@ -1,16 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-
-import qs from 'qs';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import PizzaBlock from '../components/PizzaBlock';
 import Sort from '../components/Sort';
 import Categories from '../components/Categories';
-import ReactPaginate from 'react-paginate';
 import Pagination from '../components/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
 import { setItems, fetchPizzas } from '../redux/slices/pizzaSlice';
+import { Link } from 'react-router-dom';
 
 function Home({ searchValue }) {
 	const categoryId = useSelector(state => state.filterSlice.categoryId);
@@ -50,7 +48,7 @@ function Home({ searchValue }) {
 			} else {
 				return false;
 			}
-		}).map((item) => <PizzaBlock key={item.id}  {...item} />);
+		}).map((item) => <Link to={`/pizzas/${item.id}`}><PizzaBlock key={item.id}  {...item} /></Link>);
 	return (
 		<div className='container'>
 			<div className="content__top">

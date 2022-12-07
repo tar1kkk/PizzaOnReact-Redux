@@ -8,6 +8,7 @@ import {
   Route,
 } from "react-router-dom";
 import { createContext, useState } from 'react';
+import FullPizza from './pages/FullPizza';
 
 export const SearchContext = createContext('');
 
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home searchValue={searchValue} />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/pizzas/:id" element={<FullPizza />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
