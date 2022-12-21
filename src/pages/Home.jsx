@@ -48,7 +48,7 @@ function Home({ searchValue }) {
 			} else {
 				return false;
 			}
-		}).map((item) => <Link to={`/pizzas/${item.id}`}><PizzaBlock key={item.id}  {...item} /></Link>);
+		}).map((item) => <PizzaBlock key={item.id}  {...item} />);
 	return (
 		<div className='container'>
 			<div className="content__top">

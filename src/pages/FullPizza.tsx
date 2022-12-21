@@ -4,9 +4,13 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 
-function FullPizza(props) {
+const FullPizza: React.FC = () => {
 	const { id } = useParams();
-	const [pizza, setPizza] = useState();
+	const [pizza, setPizza] = useState<{
+		imageUrl: string,
+		title: string,
+		price: number
+	}>();
 
 
 	useEffect(() => {
@@ -23,12 +27,13 @@ function FullPizza(props) {
 	}, []);
 
 	if (!pizza) {
-		return 'Loading...';
+		return <>Loading...</>;
 	}
 
 	return (
 		<div className='container'>
 			<img src={pizza.imageUrl} />
+			<h2>{pizza.title}</h2>
 			<h4>{pizza.price} </h4>
 		</div>
 	);
