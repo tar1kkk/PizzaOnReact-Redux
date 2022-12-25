@@ -12,7 +12,7 @@ type SortItem = {
 function Sort() {
 	const dispatch = useDispatch();
 	const sort = useSelector(state => state.filterSlice.sort);
-	const sortRef = useRef(null);
+	const sortRef = useRef<HTMLDivElement>(null);
 
 
 	const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ function Sort() {
 	}
 
 	useEffect(() => {
-		const handleClickOutside = (e) => {
+		const handleClickOutside = (e: any) => {
 			if (!e.path.includes(sortRef.current)) {
 				setOpen(false);
 			}
