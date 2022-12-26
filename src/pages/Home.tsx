@@ -7,18 +7,19 @@ import Pagination from '../components/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { RootState } from '../redux/store';
 
 type HomeProps = {
 	searchValue: string;
 }
 
 const Home: React.FC<HomeProps> = ({ searchValue }) => {
-	const categoryId = useSelector(state => state.filterSlice.categoryId);
+	const categoryId = useSelector((state: RootState) => state.filterSlice.categoryId);
 	const dispatch = useDispatch();
-	const sortType = useSelector(state => state.filterSlice.sort.sortProperty);
-	const currentPage = useSelector(state => state.filterSlice.currentPage);
-	const pizzas = useSelector(state => state.pizzaSlice.items);
-	const { status } = useSelector(state => state.pizzaSlice);
+	const sortType = useSelector((state: RootState) => state.filterSlice.sort.sortProperty);
+	const currentPage = useSelector((state: RootState) => state.filterSlice.currentPage);
+	const pizzas = useSelector((state: RootState) => state.pizzaSlice.items);
+	const { status } = useSelector((state: RootState) => state.pizzaSlice);
 
 
 

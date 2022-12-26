@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
+import { RootState } from '../redux/store';
 
 type SortItem = {
 	name: string;
@@ -11,7 +12,7 @@ type SortItem = {
 
 function Sort() {
 	const dispatch = useDispatch();
-	const sort = useSelector(state => state.filterSlice.sort);
+	const sort = useSelector((state: RootState) => state.filterSlice.sort);
 	const sortRef = useRef<HTMLDivElement>(null);
 
 
@@ -28,8 +29,11 @@ function Sort() {
 	}
 
 	useEffect(() => {
-		const handleClickOutside = (e: any) => {
-			if (!e.path.includes(sortRef.current)) {
+		const handleClickOutside = (e: MouseEvent) => {
+			const _event = e as MouseEvent & {
+				path: Node[];
+			};
+			if (sortRef.current && !_event.path.includes(sortRef.current)) {
 				setOpen(false);
 			}
 		}
