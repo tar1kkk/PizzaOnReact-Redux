@@ -5,12 +5,12 @@ import debounce from 'lodash.debounce';
 import { useCallback } from 'react';
 import { useState } from 'react';
 
-type SearchContextProps = {
-	searchValue: string;
-	setSearchValue: (str: string) => void;
-}
+// type SearchContextProps = {
+// 	searchValue: string;
+// 	setSearchValue: (str: string) => void;
+// }
 
-const Search: React.FC = () => {
+const Search = () => {
 	const [value, setValue] = useState('');
 
 	const updateSearchValue = useCallback(
@@ -19,11 +19,11 @@ const Search: React.FC = () => {
 		}, 1000),
 		[],
 	);
-	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChangeInput = (e) => {
 		setValue(e.target.value);
 		updateSearchValue(e.target.value);
 	}
-	const { searchValue, setSearchValue } = useContext<SearchContextProps>(SearchContext);
+	const { searchValue, setSearchValue } = useContext(SearchContext);
 	return (
 		<>
 			<input value={value} onChange={(e) => onChangeInput(e)} className={styles.root} placeholder='Поиск пиццы...' />

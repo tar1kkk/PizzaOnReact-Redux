@@ -3,7 +3,11 @@ import axios from "axios";
 import { CartItem } from './cartSlice';
 
 
-type FetchPizzasArgs = Record<string, number>;
+type FetchPizzasArgs = {
+	categoryId: number;
+	sortType: string;
+	currentPage: number;
+}
 
 export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params: FetchPizzasArgs) => {
 	const { categoryId, sortType, currentPage } = params;

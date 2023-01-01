@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Sort = {
 	name: string;
-	sortProperty: 'rating' | 'title' | 'price';
+	sortProperty: string;
 }
 
 interface FilterSliceState {
