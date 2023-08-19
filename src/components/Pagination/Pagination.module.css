@@ -1,0 +1,10 @@
+.root li {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #fe5f1e;
+    border-radius: 30px;
+}
